@@ -13,10 +13,9 @@ class Webhook < ApplicationRecord
   end
 
   def self.find_percentage(email_type, event_type)
-    event_total = self.find_total(email_type: email_type, event: event_type).to_f
+    email_event_total = self.find_total(email_type: email_type, event: event_type).to_f
     email_sent_total = self.find_total(email_type: email_type,event: "send").to_f
-
-    (event_total/email_sent_total).round(2)
+    (email_event_total/email_sent_total).round(2)
   end
 
   def self.create_hash_for(event_type)
