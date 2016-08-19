@@ -40,4 +40,10 @@ describe Webhook, "check presentation methods" do
     end
   end
 
+  describe "#create_hash_for(event_type)" do
+    it 'returns a hash for the send click percentage' do
+      expect(Webhook.create_hash_for("click")).to eq(({Shipment: 0, UserConfirmation: 1.0}))
+    end
+  end
+
 end
