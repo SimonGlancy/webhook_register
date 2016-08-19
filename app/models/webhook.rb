@@ -18,5 +18,15 @@ class Webhook < ApplicationRecord
     (event_total/email_total).round(2)
   end
 
+  def self.create_hash_for(event_type)
+    result = {}
+    Webhook.all.each do |webhook|
+      if !result.key?(webhook.email_type)
+        result[webhook.email_type.to_sym] = self.find_percentage(webhook.email_type, event_type)
+      end
+    end
+    result
+  end
+
 
 end
