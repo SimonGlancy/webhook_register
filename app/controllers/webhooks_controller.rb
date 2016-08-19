@@ -11,7 +11,7 @@ class WebhooksController < ApplicationController
   end
 
   def webhook_params
-    params.require(:webhook).permit(:address, :email_type, :event, :timestamp)
+    params.permit(:address, :email_type, :event, :timestamp)
   end
 
 end
