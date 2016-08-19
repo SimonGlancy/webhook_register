@@ -4,7 +4,8 @@ class Webhook < ApplicationRecord
     super(only: [:address,
                  :email_type,
                  :event,
-                 :timestamp])
+                 :timestamp,
+                 :Address])
   end
 
   def self.find_total(query_params)
