@@ -1,11 +1,17 @@
 require 'rails_helper'
 
 describe WebhooksController, 'testing routes' do
-  before(:each) do
 
-    @webhook1 = Webhook.create(address:"barney@lostmy.name",email_type:"Shipment",event:"send",timestamp:1432820696)
-    @webhook2 = Webhook.create(address:"tom@lostmy.name",email_type:"UserConfirmation",event:"click",timestamp:1432820702)
-    @webhook3 = Webhook.create(address:"vitor@lostmy.name",email_type:"Shipment",event:"open",timestamp:1432820704)
+  def response_hash
+    {"emails_sent" => 2,
+     "emails_opened"=> 1,
+     "emails_clicked"=> 1,
+     "open_rate"=> {"Shipment" => 1.0, "UserConfirmation" => 0.0},
+     "click_rate"=> {"Shipment" => 0.0, "UserConfirmation" => 1.0}}
+  end
+
+  before(:each) do
+    create_data
   end
 
 
@@ -13,7 +19,15 @@ describe WebhooksController, 'testing routes' do
     it 'shows all webhooks in the database', type: :request do
       get '/'
       json = JSON.parse(response.body)
-      expect(json.length).to eq(3)
+      expect(json).to eq(response_hash)
+    end
+  end
+
+  describe '#create' do
+    it 'allows a new record to be posted to the database' do
+      request = {address:"test@lostmy.name",email_type:"GetABookDiscount",event:"send",timestamp:1432820696}
+      post '/webhooks', request
+      expect(Webhook.last.email_type).to eq("GetABookDiscount")
     end
   end
 end
