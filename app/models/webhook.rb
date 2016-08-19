@@ -7,4 +7,8 @@ class Webhook < ApplicationRecord
                  :timestamp])
   end
 
+  def self.find_total(query_params)
+    Webhook.where(query_params).length
+  end
+
 end
