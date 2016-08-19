@@ -34,4 +34,8 @@ describe Webhook, "check presentation methods" do
     end
   end
 
+  describe "#find_percentage(email_type,event_type)" do
+    expect(Webhook.find_percentage("Shipment", "send"))
+  end
+
 end
