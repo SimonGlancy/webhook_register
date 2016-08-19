@@ -21,6 +21,20 @@ describe Webhook, "check presentation methods" do
       expect(Webhook.find_total(event: "open")).to eq(1)
     end
 
+    it 'returns the total number of Shipment emails' do
+      expect(Webhook.find_total(email_type: "Shipment")).to eq(2)
+    end
 
+    it 'returns the total number of UserConfirmation emails' do
+      expect(Webhook.find_total(email_type: "UserConfirmation")).to eq(1)
+    end
+  end
+
+  describe "#find_total_type_with_event(type_params,event_params)" do
+    it 'returns the total Shipment emails that have been opened' do
+      result = Webhook.find_total_type_with_event(email_type:"Shipment",
+                                                  event:"open")
+      expect(result).to eq(1)
+    end
   end
 end
