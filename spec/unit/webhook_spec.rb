@@ -12,5 +12,15 @@ describe Webhook, "check presentation methods" do
     it 'returns the total number of emails sent' do
       expect(Webhook.find_total(event: "send")).to eq(1)
     end
+
+    it 'returns the total number of emails clicked' do
+      expect(Webhook.find_total(event: "click")).to eq(1)
+    end
+
+    it 'returns the total number of emails clicked' do
+      expect(Webhook.find_total(event: "open")).to eq(1)
+    end
+
+
   end
 end
