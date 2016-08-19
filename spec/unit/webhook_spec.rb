@@ -4,13 +4,19 @@ require "rails_helper"
 describe Webhook, "check presentation methods" do
   before(:each) do
     @webhook1 = Webhook.create(address:"barney@lostmy.name",email_type:"Shipment",event:"send",timestamp:1432820696)
-    @webhook2 = Webhook.create(address:"tom@lostmy.name",email_type:"UserConfirmation",event:"click",timestamp:1432820702)
+    @webhook2 = Webhook.create(address:"tom@lostmy.name",email_type:"UserConfirmation",event:"send",timestamp:1432820702)
     @webhook3 = Webhook.create(address:"vitor@lostmy.name",email_type:"Shipment",event:"open",timestamp:1432820704)
+    @webhook4 = Webhook.create(address:"tom@lostmy.name",email_type:"UserConfirmation",event:"click",timestamp:1432820702)
+    @response_hash = {emails_sent: 2,
+                      emails_opened: 1,
+                      emails_clicked: 1,
+                      open_rate: {Shipment: 1.0, UserConfirmation: 0.0},
+                      click_rate: {Shipment: 0.0, UserConfirmation: 1.0}}
   end
 
   describe "#find_total(query_params)" do
     it 'returns the total number of emails sent' do
-      expect(Webhook.find_total(event: "send")).to eq(1)
+      expect(Webhook.find_total(event: "send")).to eq(2)
     end
 
     it 'returns the total number of emails clicked' do
@@ -26,7 +32,7 @@ describe Webhook, "check presentation methods" do
     end
 
     it 'returns the total number of UserConfirmation emails' do
-      expect(Webhook.find_total(email_type: "UserConfirmation")).to eq(1)
+      expect(Webhook.find_total(email_type: "UserConfirmation")).to eq(2)
     end
 
     it 'returns the total Shipment emails that have been opened' do
@@ -36,13 +42,23 @@ describe Webhook, "check presentation methods" do
 
   describe "#find_percentage(email_type,event_type)" do
     it 'returns the percentage of opened Shipment emails' do
-      expect(Webhook.find_percentage("Shipment", "open")).to eq(0.5)
+      expect(Webhook.find_percentage("Shipment", "open")).to eq(1.0)
     end
   end
 
   describe "#create_hash_for(event_type)" do
-    it 'returns a hash for the send click percentage' do
+    it 'returns a hash for the click percentage' do
       expect(Webhook.create_hash_for("click")).to eq(({Shipment: 0, UserConfirmation: 1.0}))
+    end
+
+    it 'returns a hash for the open percentage' do
+      expect(Webhook.create_hash_for("open")).to eq(({Shipment: 1.0, UserConfirmation: 0}))
+    end
+  end
+
+  describe "#create_response" do
+    it 'returns the hash to be sent to the index route' do
+      expect(Webhook.create_response).to eq(@response_hash)
     end
   end
 
