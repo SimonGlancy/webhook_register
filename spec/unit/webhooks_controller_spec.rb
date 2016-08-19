@@ -24,9 +24,9 @@ describe WebhooksController, 'testing routes' do
   end
 
   describe '#create' do
-    it 'allows a new record to be posted to the database' do
-      request = {address:"test@lostmy.name",email_type:"GetABookDiscount",event:"send",timestamp:1432820696}
-      post '/webhooks', request
+    it 'allows a new record to be posted to the database', type: :request do
+      request = {address:"test@lostmy.name",email_type:"GetABookDiscount",event:"send",timestamp:"1432820696"}
+      post '/webhooks', webhook:request
       expect(Webhook.last.email_type).to eq("GetABookDiscount")
     end
   end
