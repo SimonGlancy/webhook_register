@@ -35,7 +35,9 @@ describe Webhook, "check presentation methods" do
   end
 
   describe "#find_percentage(email_type,event_type)" do
-    expect(Webhook.find_percentage("Shipment", "send"))
+    it 'returns the percentage of opened Shipment emails' do
+      expect(Webhook.find_percentage("Shipment", "open")).to eq(0.5)
+    end
   end
 
 end

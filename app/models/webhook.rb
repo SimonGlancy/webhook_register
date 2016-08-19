@@ -11,5 +11,12 @@ class Webhook < ApplicationRecord
     Webhook.where(query_params).length
   end
 
+  def self.find_percentage(email_type, event_type)
+    event_total = self.find_total(email_type: email_type, event: event_type).to_f
+    email_total = self.find_total(email_type: email_type).to_f
+
+    (event_total/email_total).round(2)
+  end
+
 
 end
