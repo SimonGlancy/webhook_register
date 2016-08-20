@@ -3,7 +3,7 @@ require "rails_helper"
 
 describe Webhook, "check presentation methods" do
 
-  def response_hash
+  def model_response_hash
     {emails_sent: 2,
      emails_opened: 1,
      emails_clicked: 1,
@@ -59,7 +59,7 @@ describe Webhook, "check presentation methods" do
 
   describe "#create_response" do
     it 'returns the hash to be sent to the index route' do
-      expect(Webhook.create_response).to eq(response_hash)
+      expect(Webhook.create_response).to eq(model_response_hash)
     end
   end
 
