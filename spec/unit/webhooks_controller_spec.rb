@@ -17,6 +17,13 @@ describe WebhooksController, 'testing routes' do
      Timestamp:"1432820696"}
   end
 
+  def create_bad_request
+    {Address: nil,
+     EmailType: nil,
+     Event: nil,
+     Timestamp:"1432820696"}
+  end
+
   before(:each) do
     create_data
   end
@@ -33,6 +40,12 @@ describe WebhooksController, 'testing routes' do
     it 'allows a new record to be posted to the database', type: :request do
       post '/webhooks', create_request.to_json
       expect(Webhook.last.email_type).to eq("GetABookDiscount")
+    end
+
+    it 'does not create an entry if data missing', type: :request do
+      post '/webhooks', create_bad_request.to_json
+      expect(Webhook.all.length).to eq(4)
+      expect(response).to have_http_status(500)
     end
   end
 end
