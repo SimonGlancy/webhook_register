@@ -60,6 +60,8 @@ the app contains two routes:
 
 I thought this was an excellent challenge quite complex and lead to some good OO design within the Model to adhere to the separation of concerns and I managed to keep the controller quite skinny. It went very smoothly up until I tried to implement the llirdnam tool for posting webhooks that was supplied. I had an extensive test suite that catered for all issues raised in the challenge. I found that implementing the llirdnam lead to the information entering the app in an unwanted format, not through the params method as I would have expected. To acces the data I had to parse the body of the request into a hash that could be passed into the Webhook create method. I made a decision that I wanted to keep both my idealised solution and the llirdnam solution to I introduced a guard clause that checked whether the params had the strong parameter :webhook and catered for each outcome accordingly. This allowed my app to work with the llirdnam tool without having to change my test suite.
 
+**** update - following feedback I have updated this and now formatted the test data to be the same as the llirdnam tool which has allowed me to remove need for guard case and reduced the code in the controller considerably.
+
 #### Improvements
 
 I would move self.find_total(query_params), self.find_percentage(email_type, event_type), self.create_hash_for(event_type) methods to private in the model. This would lead to me only having one test and for the nature of this excercise I wanted to keep the tests to show how I arrived at my solution.
