@@ -1,12 +1,6 @@
 class Webhook < ApplicationRecord
 
-  def as_json(options={})
-    super(only: [:address,
-                 :email_type,
-                 :event,
-                 :timestamp,
-                 :Address])
-  end
+  validates :address, :email_type, :event, :timestamp, presence: true
 
   def self.find_total(query_params)
     Webhook.where(query_params).length
@@ -35,6 +29,4 @@ class Webhook < ApplicationRecord
      open_rate: self.create_hash_for("open"),
      click_rate: self.create_hash_for("click")}
   end
-
-
 end
