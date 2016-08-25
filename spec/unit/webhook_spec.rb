@@ -7,8 +7,8 @@ describe Webhook, "check presentation methods" do
     {emails_sent: 2,
      emails_opened: 1,
      emails_clicked: 1,
-     open_rate: {Shipment: 1.0, UserConfirmation: 0.0},
-     click_rate: {Shipment: 0.0, UserConfirmation: 1.0}}
+     open_rate:[{type: :Shipment, rate: 1.0}, {type: :UserConfirmation, rate: 0.0}],
+     click_rate: [{type: :Shipment, rate: 0.0}, {type: :UserConfirmation, rate: 1.0}]}
   end
 
   before(:each) do
@@ -49,11 +49,11 @@ describe Webhook, "check presentation methods" do
 
   describe "#create_hash_for(event_type)" do
     it 'returns a hash for the click percentage' do
-      expect(Webhook.create_hash_for("click")).to eq(({Shipment: 0, UserConfirmation: 1.0}))
+      expect(Webhook.create_array_for("click")).to eq([{type: :Shipment, rate: 0.0}, {type: :UserConfirmation, rate: 1.0}])
     end
 
     it 'returns a hash for the open percentage' do
-      expect(Webhook.create_hash_for("open")).to eq(({Shipment: 1.0, UserConfirmation: 0}))
+      expect(Webhook.create_array_for("open")).to eq([{type: :Shipment, rate: 1.0}, {type: :UserConfirmation, rate: 0.0}])
     end
   end
 

@@ -4,10 +4,11 @@ describe WebhooksController, 'testing routes' do
 
   def json_response_hash
     {"emails_sent" => 2,
-     "emails_opened"=> 1,
-     "emails_clicked"=> 1,
-     "open_rate"=> {"Shipment" => 1.0, "UserConfirmation" => 0.0},
-     "click_rate"=> {"Shipment" => 0.0, "UserConfirmation" => 1.0}}
+     "emails_opened" => 1,
+     "emails_clicked" => 1,
+     "open_rate" => [{"type" => "Shipment", "rate" => 1.0}, {"type" => "UserConfirmation", "rate" => 0.0}],
+     "click_rate" => [{"type" => "Shipment", "rate" => 0.0}, {"type" => "UserConfirmation", "rate" => 1.0}]}
+
   end
 
   def create_request
