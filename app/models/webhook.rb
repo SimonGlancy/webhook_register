@@ -12,11 +12,12 @@ class Webhook < ApplicationRecord
     (email_event_total/email_sent_total).round(2)
   end
 
-  def self.create_hash_for(event_type)
-    result = {}
+  def self.create_array_for(event_type)
+    result = []
     Webhook.all.each do |webhook|
-      if !result.key?(webhook.email_type)
-        result[webhook.email_type.to_sym] = self.find_percentage(webhook.email_type, event_type)
+      if !result.any?{|hash| hash[:type] == webhook.email_type.to_sym}
+        result << {type: webhook.email_type.to_sym,
+                   rate: self.find_percentage(webhook.email_type, event_type)}
       end
     end
     result
@@ -26,7 +27,7 @@ class Webhook < ApplicationRecord
     {emails_sent: self.find_total(event: "send"),
      emails_opened: self.find_total(event: "open"),
      emails_clicked: self.find_total(event: "click"),
-     open_rate: self.create_hash_for("open"),
-     click_rate: self.create_hash_for("click")}
+     open_rate: self.create_array_for("open"),
+     click_rate: self.create_array_for("click")}
   end
 end
